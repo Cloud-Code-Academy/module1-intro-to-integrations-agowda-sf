@@ -185,10 +185,10 @@ public class Post {
  public static Boolean checkResponseStatus(HttpResponse response)
 
     {
-        System.debug('Status Code: ' + response.getStatusCode());
+        /* System.debug('Status Code: ' + response.getStatusCode());
         System.debug('Status: ' + response.getStatus());
         System.debug('Body: ' + response.getBody());
-
+ */
         Boolean retValue = (response.getStatusCode() >= 200 && response.getStatusCode() <=299) ?  true :  false;
 
         return retValue;        
