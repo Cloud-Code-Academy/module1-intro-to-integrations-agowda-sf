@@ -1,6 +1,13 @@
 public class JSONPlaceholderExercise {
     private static final String BASE_URL = 'https://jsonplaceholder.typicode.com';
     
+public class Post {
+		public String title;
+		public String body;
+		public Integer userid;
+        public Integer id;		
+	}
+
     /**
      * Exercise 1: Implement a GET request to fetch a post by ID
      * Endpoint: /posts/{postId}
@@ -14,7 +21,18 @@ public class JSONPlaceholderExercise {
         // 3. Set the HTTP method to 'GET'
         // 4. Send the request and get the response
         // 5. Return the response body as string
-        return null;
+        Http http = new Http();
+
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(BASE_URL + '/posts/' + postId);
+        request.setHeader('Content-type', 'application/json');
+        request.setMethod('GET');
+
+        HttpResponse response = http.send(request);
+              
+       String returnBody = checkResponseStatus(response) ? response.getBody() : 'Error: ' + response.getStatus();
+
+        return returnBody;
     }
     
     /**
@@ -25,6 +43,8 @@ public class JSONPlaceholderExercise {
      * @param userId - The user ID creating the post
      * @return String - The JSON response from the API
      */
+
+    
     public static String createPost(String title, String body, Integer userId) {
         // TODO: Student Implementation
         // 1. Create a new HTTP request
@@ -34,9 +54,34 @@ public class JSONPlaceholderExercise {
         // 5. Set the request body
         // 6. Send the request and get the response
         // 7. Return the response body as string
-        return null;
+       
+        Http http = new Http();
+       
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(BASE_URL + '/posts');
+        request.setHeader('Content-type', 'application/json');
+        request.setMethod('POST');
+
+        
+        Post post = new Post();
+        post.title = title;
+        post.body = body;
+        post.userid = userid;
+
+        //System.debug(JSON.serialize(post));
+        request.setBody(JSON.serialize(post));
+
+        HttpResponse response = http.send(request);
+
+       // System.debug('Status: ' + response.getStatus());
+
+        String returnBody = checkResponseStatus(response) ? response.getBody() : 'Error: ' + response.getStatus();
+       
+
+        return returnBody;
     }
     
+   
     /**
      * Exercise 3: Implement a PUT request to update a post
      * Endpoint: /posts/{postId}
@@ -55,7 +100,27 @@ public class JSONPlaceholderExercise {
         // 5. Set the request body
         // 6. Send the request and get the response
         // 7. Return the response body as string
-        return null;
+         Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(BASE_URL + '/posts/'+ postId);
+        request.setHeader('Content-type', 'application/json');
+        request.setMethod('PUT');
+
+        
+        Post post = new Post();
+        post.title = title;
+        post.body = body;
+        post.userid = userid;
+        post.id = postId;
+
+        //System.debug(JSON.serialize(post));
+        request.setBody(JSON.serialize(post));
+        HttpResponse response = http.send(request);
+
+       String returnBody = checkResponseStatus(response) ? response.getBody() : 'Error: ' + response.getStatus();
+       
+
+        return returnBody;
     }
     
     /**
@@ -74,7 +139,21 @@ public class JSONPlaceholderExercise {
         // 5. Set the request body
         // 6. Send the request and get the response
         // 7. Return the response body as string
-        return null;
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(BASE_URL + '/posts/' + postId);
+        request.setHeader('Content-type', 'application/json');
+        request.setMethod('PATCH');
+
+        POST post = new POST();
+        post.title = title;
+
+        request.setBody(JSON.serialize(post));
+        HttpResponse response = http.send(request);
+
+        String returnBody = checkResponseStatus(response) ? response.getBody() : 'Error: ' + response.getStatus();
+
+        return returnBody;
     }
     
     /**
@@ -90,6 +169,29 @@ public class JSONPlaceholderExercise {
         // 3. Set the HTTP method to 'DELETE'
         // 4. Send the request and get the response
         // 5. Return the response status code
-        return null;
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(BASE_URL + '/posts/' + postId);
+        request.setHeader('Content-type', 'application/json');
+        request.setMethod('DELETE');
+
+        HttpResponse response = http.send(request);
+
+        return response.getStatusCode();
     }
+
+
+    //Checks the status code to verify a successful callout
+ public static Boolean checkResponseStatus(HttpResponse response)
+
+    {
+        System.debug('Status Code: ' + response.getStatusCode());
+        System.debug('Status: ' + response.getStatus());
+        System.debug('Body: ' + response.getBody());
+
+        Boolean retValue = (response.getStatusCode() >= 200 && response.getStatusCode() <=299) ?  true :  false;
+
+        return retValue;        
+    }
+
 } 
